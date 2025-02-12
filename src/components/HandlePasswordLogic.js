@@ -146,19 +146,41 @@ const HandlePasswordLogic = ({
   const handleCopy = () => {
     navigator.clipboard.writeText(password);
   };
+  const displayGenerateButton = () => {
+    const details = state.find((item) => item.checked == true);
+    if (details) {
+      return true;
+    }
+    return false;
+  };
 
   return (
     <>
       <div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div>{password}</div>
-          {password && <button onClick={handleCopy}>Copy</button>}
-        </div>
+        {password ? (
+          <div style={{ display: "flex", justifyContent: "space-between",  minHeight: "40px", }}>
+            <div>{password}</div>
+            <div>{password && <button onClick={handleCopy}>Copy</button>}</div>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              visibility: "hidden",
+              minHeight: "40px",
+            }}
+          >
+            <div>{password}</div>
+            <div>{password && <button onClick={handleCopy}>Copy</button>}</div>
+          </div>
+        )}
+
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
-            margin: "20px",
+            // margin: "20px",
           }}
         >
           <div>Character Length</div>
@@ -192,9 +214,15 @@ const HandlePasswordLogic = ({
         <div>{passwordStrength}</div>
       </div>
 
-      <div style={{ textAlign: "center" }}>
-        <button onClick={generatePassword}>Generate Password</button>
-      </div>
+      {displayGenerateButton() ? (
+        <div style={{ textAlign: "center" }}>
+          <button onClick={generatePassword}>Generate Password</button>
+        </div>
+      ) : (
+        <div style={{ textAlign: "center", visibility: "hidden" }}>
+          <button onClick={generatePassword}>Generate Password</button>
+        </div>
+      )}
     </>
   );
 };
