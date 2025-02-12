@@ -101,8 +101,6 @@ const HandlePasswordLogic = ({
   ]);
 
   const toggleItem = (item1, e) => {
-    console.log(item1, e);
-
     const details = state.map((item) => {
       return item.condition == item1.condition
         ? { ...item, checked: !item.checked }
@@ -110,17 +108,15 @@ const HandlePasswordLogic = ({
     });
 
     for (let i = 0; i < details.length; i++) {
-      if (details[i].checked) {
-        details[i].function(e);
-      }
+      details[i].function(details[i].checked);
     }
 
     setState(details);
   };
   const generatePassword = () => {
-    console.log(upperCaseLetters);
     const finalPassword =
       upperCaseLetters + lowerCaseLetters + symbols + numbers;
+    console.log(finalPassword);
 
     let filteredPassword = "";
 
@@ -129,7 +125,7 @@ const HandlePasswordLogic = ({
         filteredPassword +
         finalPassword[Math.floor(Math.random() * finalPassword.length)];
     }
-    console.log(filteredPassword);
+
     setPassword(filteredPassword);
     if (filteredPassword.length > 0 && filteredPassword.length <= 3) {
       setPasswordStrength("Very Weak");
@@ -153,12 +149,19 @@ const HandlePasswordLogic = ({
     }
     return false;
   };
+  console.log(upperCaseLetters, lowerCaseLetters);
 
   return (
     <>
       <div>
         {password ? (
-          <div style={{ display: "flex", justifyContent: "space-between",  minHeight: "40px", }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              minHeight: "40px",
+            }}
+          >
             <div>{password}</div>
             <div>{password && <button onClick={handleCopy}>Copy</button>}</div>
           </div>
